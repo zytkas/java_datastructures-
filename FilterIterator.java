@@ -12,7 +12,11 @@ import dataStructures.exceptions.NoSuchElementException;
  */
 public class FilterIterator<E> implements Iterator<E> {
 
-    //TODO: Left as an exercise.
+    Iterator<E> iterator;
+
+    Predicate<E> predicate;
+
+    E next;
 
     /**
      *
@@ -20,7 +24,10 @@ public class FilterIterator<E> implements Iterator<E> {
      * @param criterion filter
      */
     public FilterIterator(Iterator<E> list, Predicate<E> criterion) {
-        //TODO: Left as an exercise.
+        this.iterator = list;
+        this.predicate = criterion;
+        this.next = null;
+        advanced();
     }
 
     /**
@@ -29,8 +36,7 @@ public class FilterIterator<E> implements Iterator<E> {
      * @return true iff the iteration has more elements
      */
     public boolean hasNext() {
-        //TODO: Left as an exercise.
-        return true;
+        return next != null;
     }
 
     /**
@@ -40,8 +46,10 @@ public class FilterIterator<E> implements Iterator<E> {
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public E next() {
-        //TODO: Left as an exercise.
-        return null;
+        if (!hasNext()) throw new NoSuchElementException();
+        E element = next;
+        advanced();
+        return element;
     }
 
     /**
@@ -49,7 +57,18 @@ public class FilterIterator<E> implements Iterator<E> {
      * After rewind, if the iteration is not empty, next will return the first element.
      */
     public void rewind() {
-        //TODO: Left as an exercise.
+       iterator.rewind();
+       advanced();
     }
 
+    private void advanced() {
+        next = null;
+        while (iterator.hasNext()) {
+            E it = iterator.next();
+            if (predicate.check(it)){
+                next = it;
+                return;
+            }
+        }
+    }
 }

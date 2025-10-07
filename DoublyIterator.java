@@ -26,8 +26,9 @@ class DoublyIterator<E> implements Iterator<E> {
      * @param first - Node with the first element of the iteration
      */
     public DoublyIterator(DoublyListNode<E> first) {
-        //TODO: Left as an exercise.
-
+        this.firstNode = first;
+        this.nextToReturn = null;
+        rewind();
     }
     /**
      * Returns the next element in the iteration.
@@ -35,27 +36,25 @@ class DoublyIterator<E> implements Iterator<E> {
      * @return the next element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
-    public E next( ){
-        //TODO: Left as an exercise.
-        return null;
+    public E next(){
+        if(nextToReturn == null) throw new NoSuchElementException();
+        E element = nextToReturn.getElement();
+        nextToReturn = nextToReturn.getNext();
+        return element;
     }
 
     /**
      * Restart the iterator
      */
     public void rewind() {
-        //TODO: Left as an exercise.
-
+        nextToReturn = firstNode;
     }
     /**
      * Returns true if next would return an element
      * rather than throwing an exception.
      * @return true iff the iteration has more elements
      */
-    public boolean hasNext( ) {
-        //TODO: Left as an exercise.
-        return true;
+    public boolean hasNext() {
+        return nextToReturn != null;
     }
-
-
 }
