@@ -30,8 +30,9 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * currentSize is initialized as 0.
      */
     public DoublyLinkedList( ) {
-        //TODO: Left as an exercise.
-
+        head = null;
+        tail = null;
+        currentSize = 0;
     }
 
     /**
@@ -39,8 +40,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return true if list is empty
      */
     public boolean isEmpty() {
-        //TODO: Left as an exercise.
-        return true;
+        return currentSize == 0;
     }
 
     /**
@@ -49,8 +49,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      */
 
     public int size() {
-        //TODO: Left as an exercise.
-        return 0;
+        return currentSize;
     }
 
     /**
@@ -75,8 +74,12 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element - Element to be inserted
      */
     public void addFirst( E element ) {
-        //TODO: Left as an exercise.
-
+        DoublyListNode<E> newNode = new DoublyListNode<>(element, null, head);
+        if (isEmpty()) {
+            tail = newNode;
+        }
+        head = newNode;
+        currentSize++;
     }
 
     /**
@@ -84,8 +87,12 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element - Element to be inserted
      */
     public void addLast( E element ) {
-        //TODO: Left as an exercise.
-
+        DoublyListNode<E> newNode = new DoublyListNode<>(element, head, null);
+        if (isEmpty()) {
+            head = newNode;
+        }
+        tail = newNode;
+        currentSize++;
     }
 
     /**
@@ -94,8 +101,8 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getFirst( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return head.getElement();
     }
 
     /**
@@ -104,8 +111,8 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getLast( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return tail.getElement();
     }
 
    
@@ -120,19 +127,28 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws InvalidPositionException if position is not valid in the list
      */
     public E get( int position ) {
-        //TODO: Left as an exercise.
-        return null;
+        if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
+        if (position == 0) getFirst();
+        if (position == currentSize - 1) getLast();
+        return getNode(position).getElement();
     }
+
     /**
      * Returns the position of the first occurrence of the specified element
      * in the list, if the list contains the element.
      * Otherwise, returns -1.
-     * @param element - element to be searched in list
+     * param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
      */
     public int indexOf( E element ) {
-        //TODO: Left as an exercise.
-        return 0;
+        DoublyListNode<E> current = head;
+        int index = 0;
+        while (current != null && current.getElement().equals(element)) {
+            current = current.getNext();
+            index++;
+        }
+        if (current == null) return -1;
+        return index;
     }
 
     /**
@@ -145,8 +161,10 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public void add( int position, E element ) {
-        //TODO: Left as an exercise.
-
+        if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
+        if (position == 0) addFirst(element);
+        if (position == currentSize - 1) addLast(element);
+        addMiddle(position, element);
     }
 
     /**
@@ -183,4 +201,21 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return null;
     }
 
+    private DoublyListNode<E> getNode( int position ) {
+        if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
+        if (position == 0) return head;
+        if (position == currentSize - 1) return tail;
+
+        DoublyListNode<E> node = head;
+        for (int i = 0; i < position; i++) {
+            node = node.getNext();
+        }
+        return node;
+    }
+
+    private void addMiddle( int position, E element ) {
+        if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
+        DoublyListNode<E> newNode = this.getNode(position).getNext();
+        
+    }
 }
