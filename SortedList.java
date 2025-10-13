@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 
 public interface SortedList<E> extends Serializable {
-
     /**
      * Returns true iff the list contains no elements.
      * @return true if list is empty

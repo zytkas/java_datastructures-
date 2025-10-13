@@ -8,7 +8,7 @@ import dataStructures.exceptions.*;
  * @author AED  Team
  * @version 1.0
  * @param <E> Generic Element
- * 
+ *
  */
 public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
@@ -16,6 +16,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      *  Node at the head of the list.
      */
     private DoublyListNode<E> head;
+
     /**
      * Node at the tail of the list.
      */
@@ -123,11 +124,11 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
             tail = newNode;
         }else if (comparator.compare(element, head.getElement()) < 0) {
             newNode.setNext(head);
-            head.setNext(newNode);
+            head.setPrevious(newNode);
             head = newNode;
-        }else if (comparator.compare(element, tail.getElement()) > 0) {
+        }else if (comparator.compare(element, tail.getElement()) >= 0) {
             newNode.setPrevious(tail);
-            tail.setPrevious(newNode);
+            tail.setNext(newNode);
             tail = newNode;
         }else{
             addInMiddle(element);
@@ -141,7 +142,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      */
     public E remove(E element) {
         DoublyListNode<E> newNode = findNode(element);
-        if (newNode == null) throw new NoSuchElementException();
+        if (newNode == null) return null;
         removeNode(newNode);
         currentSize--;
         return newNode.getElement();
@@ -162,13 +163,13 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     private void addInMiddle(E element) {
         DoublyListNode<E> newNode = new DoublyListNode<>(element);
         DoublyListNode<E> current = head;
-        while (comparator.compare(element, current.getElement()) >= 0){
+        while (current != null && comparator.compare(element, current.getElement()) >= 0){
             current = current.getNext();
         }
         DoublyListNode<E> previous = current.getPrevious();
         previous.setNext(newNode);
         newNode.setPrevious(previous);
-        newNode.setNext(previous);
+        newNode.setNext(current);
         current.setPrevious(newNode);
     }
 
