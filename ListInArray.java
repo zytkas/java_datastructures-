@@ -1,5 +1,7 @@
 package dataStructures;
 import dataStructures.exceptions.*;
+
+
 /**
  * List in Array
  * @author AED  Team
@@ -22,7 +24,7 @@ public class ListInArray<E> implements List<E> {
 
 
     /**
-     * Construtor with capacity.
+     * Constructor with capacity.
      * @param dimension - initial capacity of array.
      */
     @SuppressWarnings("unchecked")
@@ -64,8 +66,8 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getFirst() {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return elems[0];
     }
 
     /**
@@ -75,8 +77,8 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getLast() {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return elems[counter-1];
     }
 
     /**
@@ -90,8 +92,8 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException if position is not valid in the list
      */
     public E get(int position) {
-        //TODO: Left as an exercise.
-        return null;
+        if (position < 0 || position >= counter) throw new IndexOutOfBoundsException();
+        return elems[position];
     }
 
     /**
@@ -103,8 +105,11 @@ public class ListInArray<E> implements List<E> {
      * @return position of the first occurrence of the element in the list (or -1)
      */
     public int indexOf(E element) {
-        //TODO: Left as an exercise.
-        return 0;
+        for (int i = 0; i < counter; i++) {
+            //should be here any check or um will handle them?
+            if(element == null ? elems[i]==null : element.equals(elems[i])) return i;
+        }
+        return -1;
     }
 
     /**
@@ -113,7 +118,7 @@ public class ListInArray<E> implements List<E> {
      * @param element to be inserted
      */
     public void addFirst(E element) {
-        //TODO: Left as an exercise.
+        add(0,element);
     }
 
     /**
@@ -122,7 +127,11 @@ public class ListInArray<E> implements List<E> {
      * @param element to be inserted
      */
     public void addLast(E element) {
-        //TODO: Left as an exercise.
+       if(counter==elems.length){
+           resize();
+       }
+       elems[counter] = element; //since after resize(), last position became valid
+       counter++;
     }
 
     /**
@@ -136,7 +145,15 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public void add(int position, E element) {
-        //TODO: Left as an exercise.
+        if (position < 0 || position > counter) throw new IndexOutOfBoundsException();
+        if (counter == elems.length) {
+            resize();
+        }
+        for (int i = counter; i > position; i--) {
+            elems[i] = elems[i - 1];
+        }
+        elems[position] = element;
+        counter++;
     }
 
     /**
@@ -146,8 +163,8 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeFirst() {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return remove(0);
     }
 
     /**
@@ -157,8 +174,8 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeLast() {
-        //TODO: Left as an exercise.
-        return null;
+        if (isEmpty()) throw new NoSuchElementException();
+        return remove(counter-1);
     }
 
     /**
@@ -172,7 +189,22 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public E remove(int position) {
-        //TODO: Left as an exercise.
-        return null;
+        if (position < 0 || position >= counter) throw new IndexOutOfBoundsException();
+        E remove = elems[position];
+        for (int i = position; i < counter - 1; i++) {
+            elems[i] = elems[i+1];
+        }
+        counter--;
+        return remove;
+    }
+
+    @SuppressWarnings({"ManualArrayCopy", "unchecked"})
+    private void resize() {
+        //Manually array copy, is it good?nah, just easy way, same complexity anyway with arraycopy. 0(n).
+        E[] newElems = (E[]) new Object[counter*FACTOR];
+        for (int i = 0; i < counter; i++) {
+            newElems[i] = elems[i];
+        }
+        elems = newElems;
     }
 }
