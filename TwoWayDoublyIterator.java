@@ -83,7 +83,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * Restart the iterator
      */
     public void rewind() {
-        super.rewind();
+        super.rewind(); //very questionable
         prevToReturn = null;
     }
 }
