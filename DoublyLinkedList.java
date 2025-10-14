@@ -170,7 +170,8 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
         if (position == 0) addFirst(element);
         if (position == currentSize - 1) addLast(element);
-        addMiddle(position, element);
+        addAt(position, element);
+        currentSize++;
     }
 
     /**
@@ -224,14 +225,9 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         if (position < 0 || position > currentSize - 1) throw new InvalidPositionException();
         if (position == 0) removeFirst();
         if (position == currentSize - 1) removeLast();
-        DoublyListNode<E> removedNode = getNode(position);
-        DoublyListNode<E> previous = removedNode.getPrevious();
-        DoublyListNode<E> next = removedNode.getNext();
-
-        previous.setNext(next);
-        next.setPrevious(previous);
+        E deleted = removeAt(position);
         currentSize--;
-        return removedNode.getElement();
+        return deleted;
     }
 
     private DoublyListNode<E> getNode( int position ) {
@@ -242,13 +238,20 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return node;
     }
 
-    private void addMiddle( int position, E element ) {
-        DoublyListNode<E> curr = this.getNode(position).getNext();
-        DoublyListNode<E> prevNode = curr.getPrevious();
-        DoublyListNode<E> newNode = new DoublyListNode<>(element, prevNode, curr);
-
+    private void addAt(int position, E element ) {
+        DoublyListNode<E> currentNode = this.getNode(position).getNext();
+        DoublyListNode<E> prevNode = currentNode.getPrevious();
+        DoublyListNode<E> newNode = new DoublyListNode<>(element, prevNode, currentNode);
         prevNode.setNext(newNode);
-        curr.setPrevious(newNode);
-        currentSize++;
+        currentNode.setPrevious(newNode);
+    }
+
+    private E removeAt(int position ) {
+        DoublyListNode<E> removedNode = getNode(position);
+        DoublyListNode<E> previousNode = removedNode.getPrevious();
+        DoublyListNode<E> nextNode = removedNode.getNext();
+        previousNode.setNext(nextNode);
+        nextNode.setPrevious(previousNode);
+        return removedNode.getElement();
     }
 }

@@ -51,7 +51,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
     public E next( ){
         if (!hasNext()) throw new NoSuchElementException();
         E element = nextToReturn.getElement();
-        prevToReturn = nextToReturn;
+        prevToReturn = nextToReturn.getPrevious();
         nextToReturn = nextToReturn.getNext();
         return element;
     }
@@ -64,7 +64,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
     public E previous( ) {
         if (!hasPrevious()) throw new NoSuchElementException();
         E element = prevToReturn.getElement();
-        nextToReturn = prevToReturn;
+        nextToReturn = prevToReturn.getNext();
         prevToReturn = prevToReturn.getPrevious();
         return element;
     }
