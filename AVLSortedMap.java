@@ -67,6 +67,8 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     }
 
     protected void rebalance(AVLNode<Entry<K, V>> zPos) {
+        if (zPos == null) return;  // ADD THIS CHECK
+
         if (zPos.isLeaf()) {
             zPos.updateHeight();
         }
@@ -75,9 +77,19 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
             zPos.updateHeight();
 
             if (!zPos.isBalanced()) {
-
                 AVLNode<Entry<K, V>> yPos = zPos.tallerChild();
+
+                if (yPos == null) {
+                    zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
+                    continue;
+                }
+
                 AVLNode<Entry<K, V>> xPos = yPos.tallerChild();
+
+                if (xPos == null) {
+                    zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
+                    continue;
+                }
 
                 zPos = (AVLNode<Entry<K, V>>) restructure(xPos);
 

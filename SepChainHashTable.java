@@ -25,6 +25,9 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
         super(capacity);
         this.capacity= HashTable.nextPrime((int) (capacity / IDEAL_LOAD_FACTOR));
         table = (Map<K, V>[]) new Map[this.capacity];
+
+
+
         for(int i=0;i<this.capacity;i++){
             table[i]= new MapSinglyList<>();
         }
